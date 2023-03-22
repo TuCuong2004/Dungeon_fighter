@@ -1,0 +1,16 @@
+#ifndef PLAYEROBJECT_H
+#define PLAYEROBJECT_H
+
+
+class Playerobject
+{
+    public:
+        Playerobject();
+        virtual ~Playerobject();
+
+    protected:
+
+    private:
+};
+
+#endif // PLAYEROBJECT_H

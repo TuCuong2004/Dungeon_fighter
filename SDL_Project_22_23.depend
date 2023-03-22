@@ -1,0 +1,42 @@
+# depslib dependency file v1.0
+1679336276 source:c:\users\hp\documents\sdl_project_22_23\baseobject.cpp
+	"BaseObject.h"
+
+1679417976 c:\users\hp\documents\sdl_project_22_23\baseobject.h
+	"CommonFunction.h"
+
+1679417061 c:\users\hp\documents\sdl_project_22_23\commonfunction.h
+	<iostream>
+	<bits/stdc++.h>
+	<windows.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	<string>
+	<fstream>
+
+1679055905 source:c:\users\hp\documents\sdl_project_22_23\commonfunction.cpp
+	"CommonFunction.h"
+
+1679389596 source:c:\users\hp\documents\sdl_project_22_23\game_map.cpp
+	"game_map.h"
+
+1679339049 c:\users\hp\documents\sdl_project_22_23\game_map.h
+	"CommonFunction.h"
+	"BaseObject.h"
+
+1679474282 source:c:\users\hp\documents\sdl_project_22_23\playerobject.cpp
+	"PlayerObject.h"
+
+1679474281 c:\users\hp\documents\sdl_project_22_23\playerobject.h
+	"CommonFunction.h"
+	"BaseObject.h"
+
+1679470370 source:c:\users\hp\documents\sdl_project_22_23\main.cpp
+	"CommonFunction.h"
+	"BaseObject.h"
+	"game_map.h"
+	<fstream>
+	"PlayerObject.h"
+
