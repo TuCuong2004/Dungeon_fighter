@@ -24,12 +24,12 @@ void GameMap :: LoadMap(char *name)
 
                 if(val >= 0 && val < 10)
                 {
-                    cout << val << " ";
+                   // cout << val << " ";
                     if(j > game_map_.max_x_)    game_map_.max_x_ = j;
                     if(i > game_map_.max_y_)    game_map_.max_y_ = i;
                 }
             }
-            cout << endl;
+            //cout << endl;
         }
 
         game_map_.max_x_ = (game_map_.max_x_ + 1)*TILE_SIZE;
@@ -87,7 +87,7 @@ void GameMap :: DrawMap (SDL_Renderer * screen)
         for(int j = 0; j <x2; j+= SCREEN_WIDTH/32)
         {
             int val = game_map_.tile[map_y][map_x];
-            cout <<  val << " ";
+           // cout <<  val << " ";
             if(val > 0 && val < 10)
             {
                // std::cout << val << " " ;
@@ -99,7 +99,7 @@ void GameMap :: DrawMap (SDL_Renderer * screen)
             }
             map_x++;
         }
-        cout << endl;
+       // cout << endl;
         map_y++;
     }
 

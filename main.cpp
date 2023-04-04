@@ -4,6 +4,7 @@
 #include "game_map.h"
 #include<fstream>
 #include "PlayerObject.h"
+#include"ThreatsObject.h"
 using namespace std;
 
 
@@ -69,6 +70,8 @@ void close()
     SDL_Quit;
 }
 
+
+
 int main( int argc, char* args[] )
 {
     if(InitData()==0)
@@ -84,6 +87,23 @@ int main( int argc, char* args[] )
     PlayerObject p_player ;
     p_player.LoadImg("img//player_r.png",g_screen);
     p_player.Set_clips();
+
+
+ //  vector<ThreatsObject*> threats_list = MakeThreatsList();
+    vector<ThreatsObject*> threats_list ;
+    for(int i=0; i<5; i++)
+    {
+
+        ThreatsObject* p_threat = new ThreatsObject;
+        p_threat->LoadImageA("img//threats1.png",g_screen);
+        p_threat->Set_clip();
+        p_threat->set_x_pos(900);
+        p_threat->set_y_pos(60+i*80);
+
+        threats_list.push_back(p_threat);
+        p_threat = nullptr;
+        delete p_threat;
+    }
 
 
     bool is_quit = 0;
@@ -102,12 +122,55 @@ int main( int argc, char* args[] )
         SDL_RenderClear(g_screen);
 
         g_background.Render(g_screen,NULL);
-
         game_map.DrawMap(g_screen);
 
+        p_player.Shoot(g_screen);
         p_player.Render(g_screen);
 
+        for(int i=0; i<threats_list.size(); i++)
+        {
+            if(threats_list[i] != NULL){
+            threats_list[i]->Render(g_screen);
+            threats_list[i]->Move(p_player.get_x_pos(),p_player.get_y_pos());
+            }
+        }
+
+      vector<ArrowObject*> arrow_list = p_player.get_arrow_list();
+        for(int i = 0; i < arrow_list.size(); i++)
+        {
+            if(arrow_list[i] != NULL){
+            for(int k = 0; k < threats_list.size(); k++)
+            {
+                if(threats_list[k] != NULL)
+                {
+                    SDL_Rect a_rect;
+                    a_rect.x = threats_list[k]->GetRect().x;
+                    a_rect.y = threats_list[k]->GetRect().y;
+                    a_rect.w = threats_list[k]->get_width_frame();
+                    a_rect.h = threats_list[k]->get_height_frame();
+
+                    SDL_Rect b_rect = arrow_list[i]->GetRect();
+
+                    bool bCol = CheckCollision(a_rect,b_rect);
+
+                    if(bCol)
+                    {
+                        cout << k;
+                        p_player.RemoveArrow(i);
+                        threats_list[k]->Free();
+                        threats_list.erase(threats_list.begin() + k);
+
+                    }
+                }
+
+            }
+            }
+        }
+
+
         SDL_RenderPresent(g_screen);
+
+        SDL_Delay(150);
 
     }
 

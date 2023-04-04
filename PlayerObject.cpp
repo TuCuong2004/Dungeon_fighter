@@ -1,5 +1,6 @@
 
 #include "PlayerObject.h"
+#include "arrow.h"
 
 PlayerObject :: PlayerObject()
 {
@@ -94,7 +95,7 @@ void PlayerObject :: Render (SDL_Renderer * des)
     else if(status_ == 1)
         LoadImg("img//player_l.png", des);
 
-    if( (input_type_.left_ == 1 || input_type_.right_ == 1) || (input_type_.down_ == 1 || input_type_.up_ ==1))
+    if( (input_type_.left_ == 1 || input_type_.right_ == 1) || (input_type_.down_ == 1 || input_type_.up_ ==1) )
     {
         frame_ ++;
     }
@@ -124,13 +125,13 @@ void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
     {
         if(events.key.keysym.sym == SDLK_RIGHT)
         {
-            status_ = 0;
+            status_ = WALK_RIGHT;
             input_type_.right_ = 1;
             input_type_.left_ = 0;
         }
         if(events.key.keysym.sym == SDLK_LEFT)
         {
-            status_ = 1;
+            status_ = WALK_LEFT;
             input_type_.left_ = 1;
             input_type_.right_ = 0;
         }
@@ -148,12 +149,12 @@ void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
     {
         if(events.key.keysym.sym == SDLK_RIGHT)
         {
-            status_ = 0;
+            status_ = WALK_RIGHT;
             input_type_.right_ = 0;
         }
         if(events.key.keysym.sym == SDLK_LEFT)
         {
-            status_ = 0;
+            status_ = WALK_LEFT;
             input_type_.left_ = 0;
         }
         if(events.key.keysym.sym == SDLK_DOWN)
@@ -184,6 +185,71 @@ void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
         y_pos_ -= PLAYER_V;
     }
 
+    if(events.type == SDL_MOUSEBUTTONDOWN)
+    {
+        if( events.button.button == SDL_BUTTON_RIGHT)
+        {
+            ArrowObject * p_arrow = new ArrowObject();
 
+            if(status_ == WALK_LEFT)
+            {
+                p_arrow->set_arrow_dir(ArrowObject::DIR_LEFT);
+                p_arrow->SetRect(this->rect_.x , rect_.y + height_frame_*0.5 );
+                p_arrow->LoadImg("img//arrow1.png", screen);
+            }
+            else if(status_ == WALK_RIGHT)
+            {
+                p_arrow->set_arrow_dir(ArrowObject::DIR_RIGHT);
+                p_arrow->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_*0.5 );
+                p_arrow->LoadImg("img//arrow.png", screen);
+            }
+
+            p_arrow->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_*0.5 );
+            p_arrow->set_x_val(arrow_v);
+            p_arrow->set_is_move(1);
+
+            p_arrow_list_.push_back(p_arrow);
+        }
+    }
 }
 
+void PlayerObject::Shoot(SDL_Renderer* des)
+{
+    for(int i=0; i < p_arrow_list_.size(); i++)
+    {
+        ArrowObject* p_arrow = p_arrow_list_.at(i);
+        if(p_arrow != NULL)
+        {
+            if(p_arrow->get_is_move() == 1)
+            {
+                p_arrow->Move(SCREEN_WIDTH,SCREEN_HEIGHT);
+                p_arrow->Render(des);
+            }
+            else
+            {
+                p_arrow_list_.erase(p_arrow_list_.begin() + i);
+                if(p_arrow != NULL)
+                {
+                    delete p_arrow;
+                    p_arrow = NULL;
+                }
+            }
+        }
+    }
+}
+
+void PlayerObject::RemoveArrow(const int & idx)
+{
+    int size_ = p_arrow_list_.size();
+    if(size_ > 0 && idx <size_)
+    {
+        ArrowObject* p_arrow = p_arrow_list_.at(idx);
+        p_arrow_list_.erase(p_arrow_list_.begin()+ idx);
+
+        if(p_arrow)
+        {
+            delete p_arrow;
+            p_arrow = NULL;
+        }
+    }
+}

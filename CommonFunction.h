@@ -11,6 +11,8 @@
 #include <string>
 #include <fstream>
 
+#define THREATS_ROUND_1 5
+
 using namespace std;
 
 static SDL_Window * g_window = NULL;
@@ -53,6 +55,9 @@ typedef struct Map
   string file_name_;
 
 };
+
+bool CheckCollision (const SDL_Rect& object1 , const SDL_Rect& objecct2);
+
 
 #endif // COMMONFUNCTION_H_INCLUDED
 

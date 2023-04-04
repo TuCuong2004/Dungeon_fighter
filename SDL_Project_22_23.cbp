@@ -40,6 +40,10 @@
 		<Unit filename="Commonfunction.cpp" />
 		<Unit filename="PlayerObject.cpp" />
 		<Unit filename="PlayerObject.h" />
+		<Unit filename="ThreatsObject.cpp" />
+		<Unit filename="ThreatsObject.h" />
+		<Unit filename="arrow.cpp" />
+		<Unit filename="arrow.h" />
 		<Unit filename="game_map.cpp" />
 		<Unit filename="game_map.h" />
 		<Unit filename="main.cpp" />
