@@ -99,10 +99,22 @@ void ThreatsObject::Render(SDL_Renderer* des)
 
 }
 
- void ThreatsObject::Move(float x, float y)
+int ThreatsObject::Move(float x, float y)
  {
-    if (x_pos_ > x){x_pos_-=THREATS_V;}
-    if (x_pos_ < x){x_pos_+=THREATS_V;}
+     int status=0;
+    if (x_pos_ > x){
+        x_pos_-=THREATS_V;
+        status =1;
+    }
+
+    if (x_pos_ < x){
+        x_pos_+=THREATS_V;
+        status = 0;
+    }
+
+
     if (y_pos_ > y){y_pos_-=THREATS_V;}
     if (y_pos_ < y){y_pos_+=THREATS_V;}
+
+    return status;
  }

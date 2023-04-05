@@ -7,7 +7,6 @@
 #include"ThreatsObject.h"
 using namespace std;
 
-
 BaseObject g_background;
 
 bool InitData()
@@ -71,9 +70,40 @@ void close()
 }
 
 
+void ThreatsControl(vector<ThreatsObject*> threats_list, PlayerObject p_player)
+{
+    for(int i=0; i<threats_list.size(); i++)
+        {
+            if(threats_list[i] != NULL){
+            threats_list[i]->Render(g_screen);
+            if(threats_list[i]->Move(p_player.get_x_pos(),p_player.get_y_pos()) == 1)
+            {
+                threats_list[i]->LoadImageA("img//threats1_l.png",g_screen);
+                threats_list[i]->Set_clip();
+            }
+            else
+            {
+                threats_list[i]->LoadImageA("img//threats1_r.png",g_screen);
+                threats_list[i]->Set_clip();
+            }
+            }
+        }
+}
+
+int Check_round(vector<ThreatsObject*> threats_list1,vector<ThreatsObject*> threats_list2,vector<ThreatsObject*> threats_list3)
+{
+    if(threats_list3.size() == 0)   return 4;
+    if(threats_list2.size() == 0)   return 3;
+    if(threats_list1.size() == 0)   return 2;
+
+    return 1;
+}
+
+
 
 int main( int argc, char* args[] )
 {
+
     if(InitData()==0)
         return -1;
 
@@ -88,22 +118,40 @@ int main( int argc, char* args[] )
     p_player.LoadImg("img//player_r.png",g_screen);
     p_player.Set_clips();
 
+    vector<ThreatsObject*> threats_list1;
 
- //  vector<ThreatsObject*> threats_list = MakeThreatsList();
-    vector<ThreatsObject*> threats_list ;
+    //////////round 1/////////
+
     for(int i=0; i<5; i++)
     {
-
         ThreatsObject* p_threat = new ThreatsObject;
-        p_threat->LoadImageA("img//threats1.png",g_screen);
+        p_threat->LoadImageA("img//threats1_r.png",g_screen);
         p_threat->Set_clip();
         p_threat->set_x_pos(900);
         p_threat->set_y_pos(60+i*80);
 
-        threats_list.push_back(p_threat);
+        threats_list1.push_back(p_threat);
         p_threat = nullptr;
         delete p_threat;
     }
+
+    for(int i=0; i<5; i++)
+    {
+        ThreatsObject* p_threat = new ThreatsObject;
+        p_threat->LoadImageA("img//threats1_r.png",g_screen);
+        p_threat->Set_clip();
+        p_threat->set_x_pos(50);
+        p_threat->set_y_pos(60+i*80);
+
+        threats_list1.push_back(p_threat);
+        p_threat = nullptr;
+        delete p_threat;
+    }
+    ////////round1//////////
+
+
+
+
 
 
     bool is_quit = 0;
@@ -127,27 +175,23 @@ int main( int argc, char* args[] )
         p_player.Shoot(g_screen);
         p_player.Render(g_screen);
 
-        for(int i=0; i<threats_list.size(); i++)
-        {
-            if(threats_list[i] != NULL){
-            threats_list[i]->Render(g_screen);
-            threats_list[i]->Move(p_player.get_x_pos(),p_player.get_y_pos());
-            }
-        }
+        ThreatsControl(threats_list1,p_player);
+
 
       vector<ArrowObject*> arrow_list = p_player.get_arrow_list();
         for(int i = 0; i < arrow_list.size(); i++)
         {
-            if(arrow_list[i] != NULL){
-            for(int k = 0; k < threats_list.size(); k++)
+        if(arrow_list[i] != NULL)
+        {
+            for(int k = 0; k < threats_list1.size(); k++)
             {
-                if(threats_list[k] != NULL)
+                if(threats_list1[k] != NULL)
                 {
                     SDL_Rect a_rect;
-                    a_rect.x = threats_list[k]->GetRect().x;
-                    a_rect.y = threats_list[k]->GetRect().y;
-                    a_rect.w = threats_list[k]->get_width_frame();
-                    a_rect.h = threats_list[k]->get_height_frame();
+                    a_rect.x = threats_list1[k]->GetRect().x;
+                    a_rect.y = threats_list1[k]->GetRect().y;
+                    a_rect.w = threats_list1[k]->get_width_frame();
+                    a_rect.h = threats_list1[k]->get_height_frame();
 
                     SDL_Rect b_rect = arrow_list[i]->GetRect();
 
@@ -155,22 +199,48 @@ int main( int argc, char* args[] )
 
                     if(bCol)
                     {
-                        cout << k;
                         p_player.RemoveArrow(i);
-                        threats_list[k]->Free();
-                        threats_list.erase(threats_list.begin() + k);
-
+                        threats_list1[k]->Free();
+                        threats_list1.erase(threats_list1.begin() + k);
                     }
                 }
 
             }
-            }
+
+        }
+
         }
 
 
+                    for(int k = 0; k < threats_list1.size(); k++)
+            {
+                if(threats_list1[k] != NULL)
+                {
+                    SDL_Rect a_rect;
+                    a_rect.x = threats_list1[k]->GetRect().x;
+                    a_rect.y = threats_list1[k]->GetRect().y;
+                    a_rect.w = threats_list1[k]->get_width_frame();
+                    a_rect.h = threats_list1[k]->get_height_frame();
+
+                    SDL_Rect b_rect = p_player.get_rect();
+
+                    bool cCol = CheckCollision(a_rect,b_rect);
+
+                    if(cCol)
+                    {
+                        is_quit = 1;
+                        threats_list1[k]->Free();
+                        threats_list1.erase(threats_list1.begin() + k);
+                    }
+                }
+
+            }
+
+            if(threats_list1.size() == 0)   is_quit = 1;
+
         SDL_RenderPresent(g_screen);
 
-        SDL_Delay(150);
+        SDL_Delay(100);
 
     }
 

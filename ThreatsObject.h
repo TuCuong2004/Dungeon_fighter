@@ -33,7 +33,7 @@ public:
     int get_width_frame() const {return width_frame_;}
     int get_height_frame() const {return height_frame_;}
 
-    void Move(float x, float y);
+    int Move(float x, float y);
 
     void DoPlayer(const Map& gMap);
     void CheckToMap(const Map& gMap);
@@ -41,8 +41,12 @@ public:
     float get_x_pos()  {return x_pos_;}
     float get_y_pos()  {return y_pos_;}
 
+    void Set_hp(int hp) {hp_ = hp;}
+    void get_damage()   {hp_--;}
+
 private:
 
+    int hp_;
     int map_x_;
     int map_y_;
     float x_pos_;

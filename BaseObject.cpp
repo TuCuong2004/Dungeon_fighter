@@ -40,7 +40,7 @@ bool BaseObject::LoadImg(std::string path, SDL_Renderer * screen)
 
     }
 
-    p_object_ = new_texture;
+  //  p_object_ = new_texture;
 
     if(p_object_ == NULL)
         std :: cout << "loi loadimg" << endl;

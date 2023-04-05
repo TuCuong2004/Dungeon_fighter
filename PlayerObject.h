@@ -41,6 +41,7 @@ public:
 
     float get_x_pos() const {return x_pos_;}
     float get_y_pos() const {return y_pos_;}
+    SDL_Rect get_rect();
 
 private:
 

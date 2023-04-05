@@ -5,8 +5,8 @@
 PlayerObject :: PlayerObject()
 {
     frame_ = 0;
-    x_pos_ = 50;
-    y_pos_ = 50;
+    x_pos_ = SCREEN_WIDTH/2;
+    y_pos_ = SCREEN_HEIGHT/2;
     x_val_ = 0;
     y_val_ = 0;
     width_frame_ = 0;
@@ -200,11 +200,11 @@ void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
             else if(status_ == WALK_RIGHT)
             {
                 p_arrow->set_arrow_dir(ArrowObject::DIR_RIGHT);
-                p_arrow->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_*0.5 );
+                p_arrow->SetRect(this->rect_.x + width_frame_ - 50, rect_.y + height_frame_*0.5 );
                 p_arrow->LoadImg("img//arrow.png", screen);
             }
 
-            p_arrow->SetRect(this->rect_.x + width_frame_ - 20, rect_.y + height_frame_*0.5 );
+            p_arrow->SetRect(this->rect_.x + width_frame_ - 50, rect_.y + height_frame_*0.5 );
             p_arrow->set_x_val(arrow_v);
             p_arrow->set_is_move(1);
 
@@ -252,4 +252,17 @@ void PlayerObject::RemoveArrow(const int & idx)
             p_arrow = NULL;
         }
     }
+}
+
+SDL_Rect PlayerObject::get_rect()
+{
+    SDL_Rect rect;
+    rect.x = rect_.x;
+    rect.y = rect_.y;
+    rect.w = width_frame_;
+    rect.h = height_frame_;
+
+    return rect;
+
+
 }
