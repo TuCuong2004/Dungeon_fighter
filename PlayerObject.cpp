@@ -4,6 +4,7 @@
 
 PlayerObject :: PlayerObject()
 {
+    time_ = 0;
     frame_ = 0;
     x_pos_ = SCREEN_WIDTH/2;
     y_pos_ = SCREEN_HEIGHT/2;
@@ -11,7 +12,7 @@ PlayerObject :: PlayerObject()
     y_val_ = 0;
     width_frame_ = 0;
     height_frame_ = 0;
-    status_ = -1;
+    status_ = 1;
     input_type_.left_ = 0;
     input_type_.right_ = 0;
     input_type_.down_ = 0;
@@ -90,10 +91,14 @@ void PlayerObject :: Set_clips()
 
 void PlayerObject :: Render (SDL_Renderer * des)
 {
-    if(status_ == 0)
+    if(status_ == 0){
+        weapon.LoadImg("img//bow_r.png",des);
         LoadImg("img//player_r.png", des);
-    else if(status_ == 1)
+    }
+    else if(status_ == 1){
+        weapon.LoadImg("img//bow_l.png",des);
         LoadImg("img//player_l.png", des);
+    }
 
     if( (input_type_.left_ == 1 || input_type_.right_ == 1) || (input_type_.down_ == 1 || input_type_.up_ ==1) )
     {
@@ -104,7 +109,7 @@ void PlayerObject :: Render (SDL_Renderer * des)
         frame_ = 0;
     }
 
-    if( frame_ >= 8)
+    if( frame_ >= 8*FRAMEDELAY)
     {
         frame_ = 0;
     }
@@ -112,11 +117,20 @@ void PlayerObject :: Render (SDL_Renderer * des)
     rect_.x = x_pos_;
     rect_.y = y_pos_;
 
-    SDL_Rect * current_clip = &frame_clip_[frame_];
+    SDL_Rect * current_clip;
 
-    SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_, height_frame_};
+    if(status_ == 0)
+         current_clip = &frame_clip_[frame_/FRAMEDELAY];
+    else
+         current_clip = &frame_clip_[(8*FRAMEDELAY-frame_)/FRAMEDELAY];
+
+    SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_*room, height_frame_*room};
 
     SDL_RenderCopy (des, p_object_, current_clip, &renderQuad);
+
+    SDL_Rect renderQuad_bow = {rect_.x+width_frame_*room*0.33, rect_.y+height_frame_*room*0.63, width_frame_*room*0.55, height_frame_*room*0.4};
+    SDL_RenderCopy (des, weapon.get_p_object(), NULL, &renderQuad_bow);
+
 }
 
 void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
@@ -185,9 +199,21 @@ void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
         y_pos_ -= PLAYER_V;
     }
 
+    if(x_pos_ <= 0) x_pos_+= PLAYER_V;
+    if(x_pos_ >= SCREEN_WIDTH - width_frame_ )  x_pos_ -= PLAYER_V;
+    if(y_pos_ <= 0 + TILE_SIZE) y_pos_ += PLAYER_V;
+    if(y_pos_ >= SCREEN_HEIGHT - TILE_SIZE - height_frame_) y_pos_ -= PLAYER_V;
+
+
+}
+
+void PlayerObject::Shoot(SDL_Renderer* des,SDL_Event events,int time)
+{
+    if(time-time_ >= 40){
     if(events.type == SDL_MOUSEBUTTONDOWN)
     {
-        if( events.button.button == SDL_BUTTON_RIGHT)
+        time_ = time;
+        if( events.button.button == SDL_BUTTON_LEFT)
         {
             ArrowObject * p_arrow = new ArrowObject();
 
@@ -195,26 +221,24 @@ void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
             {
                 p_arrow->set_arrow_dir(ArrowObject::DIR_LEFT);
                 p_arrow->SetRect(this->rect_.x , rect_.y + height_frame_*0.5 );
-                p_arrow->LoadImg("img//arrow1.png", screen);
+                p_arrow->LoadImg("img//arrow1.png", des);
             }
             else if(status_ == WALK_RIGHT)
             {
                 p_arrow->set_arrow_dir(ArrowObject::DIR_RIGHT);
-                p_arrow->SetRect(this->rect_.x + width_frame_ - 50, rect_.y + height_frame_*0.5 );
-                p_arrow->LoadImg("img//arrow.png", screen);
+                p_arrow->SetRect(this->rect_.x + width_frame_ - 10, rect_.y + height_frame_*0.5 );
+                p_arrow->LoadImg("img//arrow.png", des);
             }
 
-            p_arrow->SetRect(this->rect_.x + width_frame_ - 50, rect_.y + height_frame_*0.5 );
+            p_arrow->SetRect(this->rect_.x + width_frame_ - 10, rect_.y + height_frame_*0.5 );
             p_arrow->set_x_val(arrow_v);
             p_arrow->set_is_move(1);
 
             p_arrow_list_.push_back(p_arrow);
         }
     }
-}
+    }
 
-void PlayerObject::Shoot(SDL_Renderer* des)
-{
     for(int i=0; i < p_arrow_list_.size(); i++)
     {
         ArrowObject* p_arrow = p_arrow_list_.at(i);
@@ -236,6 +260,9 @@ void PlayerObject::Shoot(SDL_Renderer* des)
             }
         }
     }
+
+
+
 }
 
 void PlayerObject::RemoveArrow(const int & idx)
@@ -263,6 +290,5 @@ SDL_Rect PlayerObject::get_rect()
     rect.h = height_frame_;
 
     return rect;
-
 
 }

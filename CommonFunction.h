@@ -28,6 +28,7 @@ const int  COLOR_KEY_R = 167;
 const int COLOR_KEY_G = 175;
 const int COLOR_KEY_B = 180;
 const int RENDER_DRAW_COLOR = 255;
+const double room = 1.5;
 
 #define TILE_SIZE 30
 
@@ -43,20 +44,21 @@ typedef struct Input
   int down_;
 };
 
-typedef struct Map
+ struct Map
 {
-  int start_x_;
-  int start_y_;
-
   int max_x_;
   int max_y_;
 
   int tile[MAX_MAP_Y][MAX_MAP_X] = {0};
   string file_name_;
 
+  int get_max_x () {return max_x_;}
+  int get_max_y () {return max_y_;}
+
 };
 
 bool CheckCollision (const SDL_Rect& object1 , const SDL_Rect& objecct2);
+
 
 
 #endif // COMMONFUNCTION_H_INCLUDED

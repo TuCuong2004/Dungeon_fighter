@@ -4,7 +4,7 @@
 #include "CommonFunction.h"
 #include "BaseObject.h"
 
-#define arrow_v 50
+#define arrow_v 6
 
 class ArrowObject : public BaseObject
 {
@@ -36,7 +36,6 @@ private:
     int y_val_;
     bool is_move_;
     unsigned int arrow_dir_;
-
 
 };
 

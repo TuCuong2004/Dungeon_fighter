@@ -83,7 +83,7 @@ void ThreatsObject::Render(SDL_Renderer* des)
 {
     frame_++;
 
-     if( frame_ >= 7)
+     if( frame_ >= 49)
     {
         frame_ = 0;
     }
@@ -91,30 +91,65 @@ void ThreatsObject::Render(SDL_Renderer* des)
     rect_.x = x_pos_;
     rect_.y = y_pos_;
 
-    SDL_Rect * current_clip = &frame_clip_[frame_];
+    SDL_Rect * current_clip = &frame_clip_[frame_/7];
 
-    SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_, height_frame_};
+    SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_*room, height_frame_*room};
 
     SDL_RenderCopy (des, p_object_, current_clip, &renderQuad);
 
 }
 
-int ThreatsObject::Move(float x, float y)
+int ThreatsObject::Move(float x, float y, int time)
  {
-     int status=0;
-    if (x_pos_ > x){
-        x_pos_-=THREATS_V;
-        status =1;
+    int dem = 1;
+    int status=0;
+    if(time%2==0)
+    {
+        if (x_pos_ > x && dem == 1){
+            x_pos_-=THREATS_V;
+            status =1;
+            dem--;
+        }
+
+        if (x_pos_ < x && dem == 1){
+            x_pos_+=THREATS_V;
+            status = 0;
+            dem--;
+        }
+
+
+        if (y_pos_ > y && dem == 1){y_pos_-=THREATS_V; dem--;}
+        if (y_pos_ < y && dem == 1){y_pos_+=THREATS_V; dem--;}
     }
+    if(time%2==1)
+    {
+        if (y_pos_ > y && dem == 1){y_pos_-=THREATS_V; dem--;}
+        if (y_pos_ < y && dem == 1){y_pos_+=THREATS_V; dem--;}
 
-    if (x_pos_ < x){
-        x_pos_+=THREATS_V;
-        status = 0;
+        if (x_pos_ > x ){
+            status =1;
+        if(dem == 1){
+            x_pos_-=THREATS_V;
+            dem--;
+        }
+        }
+
+        if (x_pos_ < x){
+            status = 0;
+        if(dem == 1){
+            dem--;
+            x_pos_+=THREATS_V;
+        }
+        }
     }
-
-
-    if (y_pos_ > y){y_pos_-=THREATS_V;}
-    if (y_pos_ < y){y_pos_+=THREATS_V;}
 
     return status;
  }
+
+void ThreatsObject::set_hp_v()
+{
+    if(type_ == "1")   {hp_ = 1; THREATS_V = 1;}
+    if(type_ == "2")   {hp_ = 5; THREATS_V = 0.5;}
+    if(type_ == "3")   {hp_ = 1; THREATS_V = 1.5;}
+    if(type_ == "4")   {hp_ = 5; THREATS_V = 1.5;}
+}

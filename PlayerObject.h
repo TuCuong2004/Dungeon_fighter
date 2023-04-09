@@ -5,7 +5,8 @@
 #include <vector>
 #include "CommonFunction.h"
 #include "BaseObject.h"
-#define PLAYER_V 5
+#define PLAYER_V 3
+#define FRAMEDELAY 7
 
 class PlayerObject : public BaseObject
 {
@@ -29,7 +30,7 @@ public:
     void Set_clips();
     int status_;
 
-    void Shoot(SDL_Renderer* des);
+    void Shoot(SDL_Renderer* des,SDL_Event events,int time);
 
     void set_arrow_list(std::vector<ArrowObject*> arrow_list)
     {
@@ -47,6 +48,9 @@ private:
 
     vector <ArrowObject*> p_arrow_list_;
 
+    BaseObject weapon;
+
+    int time_;
     float x_val_;
     float y_val_;
 

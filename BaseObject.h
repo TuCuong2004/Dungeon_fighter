@@ -19,6 +19,7 @@ public:
 
     void Free();
 
+    SDL_Texture * get_p_object() {return p_object_;};
 
 protected:
     SDL_Texture * p_object_ = NULL;

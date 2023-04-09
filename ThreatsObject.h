@@ -2,7 +2,7 @@
 #define THREATSOBJECT_H_INCLUDED
 
 #define Threats_frame 8
-#define THREATS_V 2
+
 
 #include "CommonFunction.h"
 #include "BaseObject.h"
@@ -33,7 +33,7 @@ public:
     int get_width_frame() const {return width_frame_;}
     int get_height_frame() const {return height_frame_;}
 
-    int Move(float x, float y);
+    int Move(float x, float y,int time);
 
     void DoPlayer(const Map& gMap);
     void CheckToMap(const Map& gMap);
@@ -43,9 +43,15 @@ public:
 
     void Set_hp(int hp) {hp_ = hp;}
     void get_damage()   {hp_--;}
+    void set_hp_v();
+    void set_v(int v) {THREATS_V = v;}
+    void set_type(string type)    {type_ = type;}
+    string get_type() {return type_;}
+    int get_hp() {return hp_;}
 
 private:
-
+    string type_="1";
+    double THREATS_V = 1;
     int hp_;
     int map_x_;
     int map_y_;
