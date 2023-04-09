@@ -6,8 +6,8 @@ PlayerObject :: PlayerObject()
 {
     time_ = 0;
     frame_ = 0;
-    x_pos_ = SCREEN_WIDTH/2 - 100;
-    y_pos_ = SCREEN_HEIGHT/2 + 100;
+    x_pos_ = SCREEN_WIDTH/2;
+    y_pos_ = SCREEN_HEIGHT/2;
     x_val_ = 0;
     y_val_ = 0;
     width_frame_ = 0;

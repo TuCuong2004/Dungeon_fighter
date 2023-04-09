@@ -12,6 +12,7 @@
 #include <fstream>
 
 #define THREATS_ROUND_1 5
+#define FRAMEDELAY 7
 
 using namespace std;
 

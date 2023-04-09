@@ -15,7 +15,6 @@ bool InitData()
     int ret = SDL_Init(SDL_INIT_VIDEO);
     if (ret < 0)    return 0;
 
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"1");
 
     g_window = SDL_CreateWindow("Dungeon fighter",
                                 SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,SCREEN_HEIGHT,SDL_WINDOW_SHOWN);
@@ -28,14 +27,7 @@ bool InitData()
 
         if(g_screen == NULL)
             succes = 0;
-        else
-        {
-            SDL_SetRenderDrawColor(g_screen,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR);
-            int imgFlags = IMG_INIT_PNG;
 
-            if (!(IMG_Init(imgFlags))&&imgFlags)     succes = 0;
-
-        }
     }
 
     return succes;
@@ -389,10 +381,10 @@ int main( int argc, char* args[] )
                             if(threats_list2[k] != NULL)
                             {
                                 SDL_Rect a_rect;
-                                a_rect.x = threats_list2[k]->GetRect().x+10;
-                                a_rect.y = threats_list2[k]->GetRect().y+10;
-                                a_rect.w = threats_list2[k]->get_width_frame()-20;
-                                a_rect.h = threats_list2[k]->get_height_frame()-20;
+                                a_rect.x = threats_list2[k]->GetRect().x;
+                                a_rect.y = threats_list2[k]->GetRect().y;
+                                a_rect.w = threats_list2[k]->get_width_frame();
+                                a_rect.h = threats_list2[k]->get_height_frame();
 
                                 SDL_Rect b_rect = p_player.get_rect();
 

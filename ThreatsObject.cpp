@@ -83,7 +83,7 @@ void ThreatsObject::Render(SDL_Renderer* des)
 {
     frame_++;
 
-     if( frame_ >= 49)
+     if( frame_ >= FRAMEDELAY*7)
     {
         frame_ = 0;
     }
@@ -91,7 +91,7 @@ void ThreatsObject::Render(SDL_Renderer* des)
     rect_.x = x_pos_;
     rect_.y = y_pos_;
 
-    SDL_Rect * current_clip = &frame_clip_[frame_/7];
+    SDL_Rect * current_clip = &frame_clip_[frame_/FRAMEDELAY];
 
     SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_*room, height_frame_*room};
 

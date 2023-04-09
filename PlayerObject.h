@@ -6,7 +6,7 @@
 #include "CommonFunction.h"
 #include "BaseObject.h"
 #define PLAYER_V 3
-#define FRAMEDELAY 7
+
 
 class PlayerObject : public BaseObject
 {
