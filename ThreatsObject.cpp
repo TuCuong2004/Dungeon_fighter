@@ -149,7 +149,7 @@ int ThreatsObject::Move(float x, float y, int time)
 void ThreatsObject::set_hp_v()
 {
     if(type_ == "1")   {hp_ = 1; THREATS_V = 1;}
-    if(type_ == "2")   {hp_ = 5; THREATS_V = 0.5;}
+    if(type_ == "2")   {hp_ = 3; THREATS_V = 1;}
     if(type_ == "3")   {hp_ = 1; THREATS_V = 1.5;}
     if(type_ == "4")   {hp_ = 5; THREATS_V = 1.5;}
 }

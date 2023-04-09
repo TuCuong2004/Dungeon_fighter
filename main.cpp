@@ -163,7 +163,7 @@ vector<ThreatsObject*> MakeThreats1()
         delete p_threat;
     }
 
-    for(int i=0; i<5; i++)
+  /*  for(int i=0; i<5; i++)
     {
         ThreatsObject* p_threat = new ThreatsObject;
         p_threat->LoadImageA("img//threats2_r.png",g_screen);
@@ -191,7 +191,7 @@ vector<ThreatsObject*> MakeThreats1()
         threats_list1.push_back(p_threat);
         p_threat = nullptr;
         delete p_threat;
-    }
+    }*/
     return threats_list1;
 }
 
@@ -341,7 +341,7 @@ int main( int argc, char* args[] )
                         }
         }
 
-        if(Check_round(threats_list1,threats_list2) == 2)  ///// round2 /////
+       if(Check_round(threats_list1,threats_list2) == 2)  ///// round2 /////
         {
                 ThreatsControl(threats_list2,p_player,time);
                 vector<ArrowObject*> arrow_list = p_player.get_arrow_list();
