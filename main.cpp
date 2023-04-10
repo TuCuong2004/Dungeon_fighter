@@ -155,7 +155,7 @@ vector<ThreatsObject*> MakeThreats1()
         delete p_threat;
     }
 
-  /*  for(int i=0; i<5; i++)
+ /*  for(int i=0; i<5; i++)
     {
         ThreatsObject* p_threat = new ThreatsObject;
         p_threat->LoadImageA("img//threats2_r.png",g_screen);
@@ -168,9 +168,9 @@ vector<ThreatsObject*> MakeThreats1()
         threats_list1.push_back(p_threat);
         p_threat = nullptr;
         delete p_threat;
-    }
+    } */
 
-    for(int i=0; i<5; i++)
+   /* for(int i=0; i<5; i++)
     {
         ThreatsObject* p_threat = new ThreatsObject;
         p_threat->LoadImageA("img//threats2_r.png",g_screen);
