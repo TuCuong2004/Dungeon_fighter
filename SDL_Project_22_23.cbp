@@ -38,6 +38,8 @@
 		<Unit filename="BaseObject.h" />
 		<Unit filename="CommonFunction.h" />
 		<Unit filename="Commonfunction.cpp" />
+		<Unit filename="Menu.cpp" />
+		<Unit filename="Menu.h" />
 		<Unit filename="PlayerObject.cpp" />
 		<Unit filename="PlayerObject.h" />
 		<Unit filename="ThreatsObject.cpp" />

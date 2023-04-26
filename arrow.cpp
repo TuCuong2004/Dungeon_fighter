@@ -21,6 +21,7 @@ void ArrowObject :: Move(const int& x_border, const int & y_border)
         if(rect_.x > x_border)
         {
             is_move_ = 0;
+            Free();
         }
     }
     else if(arrow_dir_ == DIR_LEFT)
@@ -29,6 +30,7 @@ void ArrowObject :: Move(const int& x_border, const int & y_border)
         if(rect_.x < 0)
         {
             is_move_ = 0;
+            Free();
         }
     }
 

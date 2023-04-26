@@ -93,10 +93,23 @@ void ThreatsObject::Render(SDL_Renderer* des)
 
     SDL_Rect * current_clip = &frame_clip_[frame_/FRAMEDELAY];
 
-    SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_*room, height_frame_*room};
+    SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_*zoom, height_frame_*zoom};
+
 
     SDL_RenderCopy (des, p_object_, current_clip, &renderQuad);
 
+}
+
+void ThreatsObject::Render_hp(SDL_Renderer* des)
+{
+    SDL_Rect hp_render = {rect_.x +1, rect_.y - 15 +1,  width_frame_*zoom*hp_*1.0/hp_max -2, 5-2};
+    SDL_Rect hp_box = {rect_.x, rect_.y - 15, width_frame_*zoom, 5};
+
+    SDL_SetRenderDrawColor(des, 200, 0, 0, 255);
+    SDL_RenderFillRect(des, &hp_box);
+
+    SDL_SetRenderDrawColor(des, 0, 255, 0, 255);
+    SDL_RenderFillRect(des, &hp_render);
 }
 
 int ThreatsObject::Move(float x, float y, int time)
@@ -152,4 +165,6 @@ void ThreatsObject::set_hp_v()
     if(type_ == "2")   {hp_ = 3; THREATS_V = 1;}
     if(type_ == "3")   {hp_ = 1; THREATS_V = 1.5;}
     if(type_ == "4")   {hp_ = 5; THREATS_V = 1.5;}
+
+    hp_max = hp_;
 }

@@ -4,6 +4,7 @@
 
 PlayerObject :: PlayerObject()
 {
+    run_ = 0;
     time_ = 0;
     frame_ = 0;
     x_pos_ = SCREEN_WIDTH/2;
@@ -100,7 +101,7 @@ void PlayerObject :: Render (SDL_Renderer * des)
         LoadImg("img//player_l.png", des);
     }
 
-    if( (input_type_.left_ == 1 || input_type_.right_ == 1) || (input_type_.down_ == 1 || input_type_.up_ ==1) )
+    if( (input_type_.left_ == 1 || input_type_.right_ == 1) || (input_type_.down_ == 1 || input_type_.up_ ==1) || run_ == 1)
     {
         frame_ ++;
     }
@@ -119,17 +120,19 @@ void PlayerObject :: Render (SDL_Renderer * des)
 
     SDL_Rect * current_clip;
 
-    if(status_ == 0)
+    if(status_ == 0 )
          current_clip = &frame_clip_[frame_/FRAMEDELAY];
     else
          current_clip = &frame_clip_[(8*FRAMEDELAY-frame_)/FRAMEDELAY];
 
-    SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_*room, height_frame_*room};
+    SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_*zoom, height_frame_*zoom};
 
     SDL_RenderCopy (des, p_object_, current_clip, &renderQuad);
 
-    SDL_Rect renderQuad_bow = {rect_.x+width_frame_*room*0.33, rect_.y+height_frame_*room*0.63, width_frame_*room*0.55, height_frame_*room*0.4};
-    SDL_RenderCopy (des, weapon.get_p_object(), NULL, &renderQuad_bow);
+    SDL_Rect renderQuad_bow = {rect_.x+width_frame_*zoom*0.33, rect_.y+height_frame_*zoom*0.63, width_frame_*zoom*0.55, height_frame_*zoom*0.4};
+    if(run_ != 1)
+        SDL_RenderCopy (des, weapon.get_p_object(), NULL, &renderQuad_bow);
+
 
 }
 

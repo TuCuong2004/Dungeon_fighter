@@ -10,6 +10,8 @@
 #include <SDL_ttf.h>
 #include <string>
 #include <fstream>
+#include <string>
+#include <typeinfo>
 
 #define THREATS_ROUND_1 5
 #define FRAMEDELAY 7
@@ -20,22 +22,25 @@ static SDL_Window * g_window = NULL;
 static SDL_Renderer * g_screen = NULL;
 static SDL_Event  g_event;
 
+static SDL_Window * g_menu = NULL;
+static SDL_Renderer * g_menu_render = NULL;
 // screen
-const int SCREEN_WIDTH = 960;
-const int SCREEN_HEIGHT = 540;
 const int SCREEN_BPP = 32;
 
 const int  COLOR_KEY_R = 167;
 const int COLOR_KEY_G = 175;
 const int COLOR_KEY_B = 180;
 const int RENDER_DRAW_COLOR = 255;
-const double room = 1.5;
-
+const double zoom = 1.5;
+const double zoom_m = 1;
 #define TILE_SIZE 30
 
 
-#define MAX_MAP_X 32
-#define MAX_MAP_Y 18
+#define MAX_MAP_X 34
+#define MAX_MAP_Y 20
+
+const int SCREEN_WIDTH = MAX_MAP_X*TILE_SIZE*zoom_m;
+const int SCREEN_HEIGHT = MAX_MAP_Y*TILE_SIZE*zoom_m;
 
 typedef struct Input
 {

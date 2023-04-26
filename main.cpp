@@ -5,9 +5,17 @@
 #include<fstream>
 #include "PlayerObject.h"
 #include"ThreatsObject.h"
+#include"Menu.h"
 using namespace std;
 
 BaseObject g_background;
+TTF_Font* font=NULL;
+SDL_Color textColor = {255, 255, 255};
+void Init_menu()
+{
+
+}
+
 
 bool InitData()
 {
@@ -29,8 +37,11 @@ bool InitData()
             succes = 0;
 
     }
+    TTF_Init();
 
+    font = TTF_OpenFont("m5x7.ttf",50);
     return succes;
+
 
 }
 
@@ -69,6 +80,8 @@ void ThreatsControl(vector<ThreatsObject*> threats_list, PlayerObject p_player,i
             string s2 = "img//threats" + threats_list[i]->get_type() + "_r" + ".png";
             if(threats_list[i] != NULL){
             threats_list[i]->Render(g_screen);
+            threats_list[i]->Render_hp(g_screen);
+
             if(threats_list[i]->Move(p_player.get_x_pos(),p_player.get_y_pos(),time) == 1)
             {
                 threats_list[i]->LoadImageA(s1,g_screen);
@@ -225,16 +238,89 @@ vector<ThreatsObject*> MakeThreats2()
 
 int main( int argc, char* args[] )
 {
-    int time=0;
+    int time[10];
+    for(int i=0; i<10; i++)
+    {
+        time[i] = 0;
+    }
 
     if(InitData()==0)
         return -1;
 
   if(LoadBacground() == 0)
         return -1;
+/////////////////game start///////////////////////////////////////////////////////////////////////////////////////
+
+
+  // run_menu(g_screen,font,textColor);
+        BaseObject intro_back_ground;
+        intro_back_ground.LoadImg("map//back_ground.png",g_screen);
+        int mouseX, mouseY;
+        PlayerObject intro_player1 ;
+        intro_player1.LoadImg("img//player_l.png",g_screen);
+        intro_player1.Set_clips();
+
+        PlayerObject intro_player2 ;
+        intro_player2.LoadImg("img//player_l.png",g_screen);
+        intro_player2.Set_clips();
+
+        ThreatsObject intro_threats1;
+        intro_threats1.LoadImageA("img//threats4_r.png",g_screen);
+        intro_threats1.Set_clip();
+
+        ThreatsObject intro_threats2;
+        intro_threats2.LoadImageA("img//threats4_l.png",g_screen);
+        intro_threats2.Set_clip();
+
+
+    while(1)
+    {
+//        game_map0.DrawMap(g_screen);
+       intro_back_ground.Render(g_screen);
+        SDL_PollEvent(&g_event);
+        draw_menu(g_screen,font,textColor);
+        if(g_event.type == SDL_MOUSEBUTTONDOWN&&mouseX>=458&&mouseX<=563&&mouseY>=250&&mouseY<=295)
+        {
+            break;
+        }
+        if(g_event.type==SDL_QUIT||g_event.type == SDL_MOUSEBUTTONDOWN&&mouseX>=468&&mouseX<=552&&mouseY>=350&&mouseY<=395)
+            exit(0);
+        if(g_event.type == SDL_MOUSEMOTION)
+        {
+            mouseX = g_event.button.x;
+            mouseY = g_event.button.y;
+        }
+        if(mouseX>=458&&mouseX<=563&&mouseY>=250&&mouseY<=295)
+        {
+            intro_player1.set_pos(350 , 260);
+            intro_player1.set_status(0);
+            intro_player1.run();
+            intro_player1.Render(g_screen);
+
+            intro_threats1.set_x_pos(390);
+            intro_threats1.set_y_pos(250);
+            intro_threats1.Render(g_screen);
+
+        }
+
+        if(mouseX>=468&&mouseX<=552&&mouseY>=350&&mouseY<=395)
+        {
+            intro_player1.set_pos(350 , 360);
+            intro_player1.set_status(1);
+            intro_player1.run();
+            intro_player1.Render(g_screen);
+
+            intro_threats2.set_x_pos(390);
+            intro_threats2.set_y_pos(350);
+            intro_threats2.Render(g_screen);
+        }
+        SDL_Delay(10);
+        SDL_RenderPresent(g_screen);
+    }
+/////////////////game start//////////////////////////////////////////////////////////////////////////////////////
 
     GameMap game_map;
-    game_map.LoadMap("map/map.o");
+    game_map.LoadMap("map/map1.o");
     game_map.LoadTiles(g_screen);
 
     PlayerObject p_player ;
@@ -243,6 +329,9 @@ int main( int argc, char* args[] )
 
     vector<ThreatsObject*> threats_list1 = MakeThreats1();
     vector<ThreatsObject*> threats_list2 = MakeThreats2();
+
+    /////////////////start window ///////////////////
+
     bool is_quit = 0;
 
     while(!is_quit)
@@ -261,15 +350,14 @@ int main( int argc, char* args[] )
         game_map.DrawMap(g_screen);
 
         p_player.Move(g_event,g_screen);
-        p_player.Shoot(g_screen,g_event,time);
+        p_player.Shoot(g_screen,g_event,time[0]);
         p_player.Render(g_screen);
-
 
 
         if(Check_round(threats_list1,threats_list2) == 1)  ///// round1 /////
         {
-
-            ThreatsControl(threats_list1,p_player,time);
+            if(time[1] - 0 <= 300) {printText(g_screen,"Round 1",SCREEN_WIDTH/2 -100 ,150,font,textColor);}
+            ThreatsControl(threats_list1,p_player,time[1]);
                   vector<ArrowObject*> arrow_list = p_player.get_arrow_list();
                 for(int i = 0; i < arrow_list.size(); i++)
                 {
@@ -331,11 +419,15 @@ int main( int argc, char* args[] )
                             }
 
                         }
+                        time[1]++;
+
         }
+
 
        if(Check_round(threats_list1,threats_list2) == 2)  ///// round2 /////
         {
-                ThreatsControl(threats_list2,p_player,time);
+            if(time[2] <= 300) {printText(g_screen,"Round 2",SCREEN_WIDTH/2 -100 ,150,font,textColor);}
+                ThreatsControl(threats_list2,p_player,time[2]);
                 vector<ArrowObject*> arrow_list = p_player.get_arrow_list();
                 for(int i = 0; i < arrow_list.size(); i++)
                 {
@@ -399,12 +491,13 @@ int main( int argc, char* args[] )
                             }
 
                         }
+                        time[2]++;
         }
 
 
            if(Check_round(threats_list1,threats_list2) == 3)   is_quit = 1;
 
-        time++;
+        time[0]++;
         SDL_RenderPresent(g_screen);
 
         SDL_Delay(10);

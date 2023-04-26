@@ -18,7 +18,7 @@ public:
     void Render(SDL_Renderer * des, const SDL_Rect * clip = NULL);
 
     void Free();
-
+    int get_rect_w()   { return rect_.w;}
     SDL_Texture * get_p_object() {return p_object_;};
 
 protected:

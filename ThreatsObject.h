@@ -48,11 +48,14 @@ public:
     void set_type(string type)    {type_ = type;}
     string get_type() {return type_;}
     int get_hp() {return hp_;}
+    void Render_hp(SDL_Renderer* des);
+
 
 private:
     string type_="1";
     double THREATS_V = 1;
     int hp_;
+    int hp_max;
     int map_x_;
     int map_y_;
     float x_pos_;

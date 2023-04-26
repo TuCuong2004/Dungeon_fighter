@@ -29,6 +29,7 @@ public:
     void Move(SDL_Event events, SDL_Renderer * screen);
     void Set_clips();
     int status_;
+    void run() { run_ = 1;}
 
     void Shoot(SDL_Renderer* des,SDL_Event events,int time);
 
@@ -39,6 +40,8 @@ public:
 
     vector <ArrowObject*> get_arrow_list() const {return p_arrow_list_;}
     void RemoveArrow(const int & idx);
+    void set_status( int a) {status_ = a;}
+    void set_pos(int x, int y) {x_pos_ = x, y_pos_ = y;}
 
     float get_x_pos() const {return x_pos_;}
     float get_y_pos() const {return y_pos_;}
@@ -60,6 +63,7 @@ private:
     SDL_Rect frame_clip_[9];
     Input input_type_;
     int frame_;
+    int run_ ;
 };
 
 
