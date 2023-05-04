@@ -229,15 +229,15 @@ vector<ThreatsObject*> MakeThreats2()
         delete p_threat;
     }
 
-    for(int i=0; i<5; i++)
+     for(int i=0; i<5; i++)
     {
         ThreatsObject* p_threat = new ThreatsObject;
-        p_threat->LoadImageA("img//threats2_r.png",g_screen);
+        p_threat->LoadImageA("img//threats1_r.png",g_screen);
         p_threat->set_type("3");
         p_threat->set_hp_v();
         p_threat->Set_clip();
-        p_threat->set_x_pos(270 +i*100);
-        p_threat->set_y_pos(60);
+        p_threat->set_x_pos(900);
+        p_threat->set_y_pos(60+i*80);
 
         threats_list1.push_back(p_threat);
         p_threat = nullptr;
@@ -247,12 +247,12 @@ vector<ThreatsObject*> MakeThreats2()
     for(int i=0; i<5; i++)
     {
         ThreatsObject* p_threat = new ThreatsObject;
-        p_threat->LoadImageA("img//threats2_r.png",g_screen);
+        p_threat->LoadImageA("img//threats1_r.png",g_screen);
         p_threat->set_type("3");
         p_threat->set_hp_v();
         p_threat->Set_clip();
-        p_threat->set_x_pos(270 +i*100);
-        p_threat->set_y_pos(SCREEN_HEIGHT-100);
+        p_threat->set_x_pos(50);
+        p_threat->set_y_pos(60+i*80);
 
         threats_list1.push_back(p_threat);
         p_threat = nullptr;

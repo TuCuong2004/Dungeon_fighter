@@ -55,8 +55,8 @@ private:
     vector <ThunderObject*> p_thunder_list_;
     BaseObject weapon;
 
-    int time_;
-    int time1_;
+    int time_=-40;
+    int time1_=-100;
     float x_val_;
     float y_val_;
 

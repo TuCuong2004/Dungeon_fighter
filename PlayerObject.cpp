@@ -196,10 +196,10 @@ void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
         y_pos_ -= PLAYER_V;
     }
 
-    if(x_pos_ <= 0) x_pos_+= PLAYER_V;
-    if(x_pos_ >= SCREEN_WIDTH - width_frame_ )  x_pos_ -= PLAYER_V;
-    if(y_pos_ <= 0 + TILE_SIZE) y_pos_ += PLAYER_V;
-    if(y_pos_ >= SCREEN_HEIGHT - TILE_SIZE - height_frame_) y_pos_ -= PLAYER_V;
+    if(x_pos_ <= 0 + 30) x_pos_+= PLAYER_V;
+    if(x_pos_ >= SCREEN_WIDTH - width_frame_ -20)  x_pos_ -= PLAYER_V;
+    if(y_pos_ <= 0 + TILE_SIZE + 30) y_pos_ += PLAYER_V;
+    if(y_pos_ >= SCREEN_HEIGHT - TILE_SIZE - height_frame_ -35) y_pos_ -= PLAYER_V;
 
 
 }
@@ -261,7 +261,7 @@ void PlayerObject::Shoot(SDL_Renderer* des,SDL_Event events,int time,float x_sho
         }
     }
 //////////
-    if(time-time1_ >= 100){
+    if(time-time1_ >= 50){
     if(events.type == SDL_MOUSEBUTTONDOWN)
     {
         time1_ = time;
