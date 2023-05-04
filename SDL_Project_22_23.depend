@@ -46,7 +46,7 @@
 1682100205 c:\users\hp\desktop\dungeon_ fighter\baseobject.h
 	"CommonFunction.h"
 
-1682401297 c:\users\hp\desktop\dungeon_ fighter\commonfunction.h
+1682581755 c:\users\hp\desktop\dungeon_ fighter\commonfunction.h
 	<iostream>
 	<bits/stdc++.h>
 	<windows.h>
@@ -58,6 +58,7 @@
 	<fstream>
 	<string>
 	<typeinfo>
+	<cmath>
 
 1682401297 source:c:\users\hp\desktop\dungeon_ fighter\commonfunction.cpp
 	"CommonFunction.h"
@@ -69,17 +70,18 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1682420540 source:c:\users\hp\desktop\dungeon_ fighter\playerobject.cpp
+1683194295 source:c:\users\hp\desktop\dungeon_ fighter\playerobject.cpp
 	"PlayerObject.h"
 	"arrow.h"
 
-1682423417 c:\users\hp\desktop\dungeon_ fighter\playerobject.h
+1683171529 c:\users\hp\desktop\dungeon_ fighter\playerobject.h
 	"arrow.h"
 	<vector>
 	"CommonFunction.h"
 	"BaseObject.h"
+	"Thunder.h"
 
-1682508075 source:c:\users\hp\desktop\dungeon_ fighter\main.cpp
+1683194206 source:c:\users\hp\desktop\dungeon_ fighter\main.cpp
 	"CommonFunction.h"
 	"BaseObject.h"
 	"game_map.h"
@@ -88,21 +90,21 @@
 	"ThreatsObject.h"
 	"Menu.h"
 
-1681284012 source:c:\users\hp\desktop\dungeon_ fighter\arrow.cpp
+1682673769 source:c:\users\hp\desktop\dungeon_ fighter\arrow.cpp
 	"arrow.h"
 
-1681021100 c:\users\hp\desktop\dungeon_ fighter\arrow.h
+1682603337 c:\users\hp\desktop\dungeon_ fighter\arrow.h
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1682091902 source:c:\users\hp\desktop\dungeon_ fighter\threatsobject.cpp
+1682863506 source:c:\users\hp\desktop\dungeon_ fighter\threatsobject.cpp
 	"ThreatsObject.h"
 
-1681899656 c:\users\hp\desktop\dungeon_ fighter\threatsobject.h
+1683182093 c:\users\hp\desktop\dungeon_ fighter\threatsobject.h
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1682419364 source:c:\users\hp\desktop\dungeon_ fighter\menu.cpp
+1682530783 source:c:\users\hp\desktop\dungeon_ fighter\menu.cpp
 	<bits/stdc++.h>
 	<windows.h>
 	<SDL.h>
@@ -112,6 +114,13 @@
 	"Menu.h"
 	"game_map.h"
 
-1682402962 c:\users\hp\desktop\dungeon_ fighter\menu.h
+1682530297 c:\users\hp\desktop\dungeon_ fighter\menu.h
 	"CommonFunction.h"
+
+1683184330 source:c:\users\hp\desktop\dungeon_ fighter\thunder.cpp
+	"Thunder.h"
+
+1683183836 c:\users\hp\desktop\dungeon_ fighter\thunder.h
+	"CommonFunction.h"
+	"BaseObject.h"
 

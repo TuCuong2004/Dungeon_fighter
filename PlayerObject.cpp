@@ -31,7 +31,7 @@ bool PlayerObject :: LoadImg (string path,SDL_Renderer * screen)
 
     if (ret == 1)
     {
-        width_frame_ = rect_.w/9;
+        width_frame_ = rect_.w/8;
         height_frame_ = rect_.h;
     }
 
@@ -82,10 +82,6 @@ void PlayerObject :: Set_clips()
         frame_clip_[7].w = width_frame_;
         frame_clip_[7].h = height_frame_;
 
-        frame_clip_[8].x = 8*width_frame_;
-        frame_clip_[8].y = 0;
-        frame_clip_[8].w = width_frame_;
-        frame_clip_[8].h = height_frame_;
     }
 
 }
@@ -110,7 +106,7 @@ void PlayerObject :: Render (SDL_Renderer * des)
         frame_ = 0;
     }
 
-    if( frame_ >= 8*FRAMEDELAY)
+    if( frame_ >= 7*FRAMEDELAY)
     {
         frame_ = 0;
     }
@@ -123,40 +119,38 @@ void PlayerObject :: Render (SDL_Renderer * des)
     if(status_ == 0 )
          current_clip = &frame_clip_[frame_/FRAMEDELAY];
     else
-         current_clip = &frame_clip_[(8*FRAMEDELAY-frame_)/FRAMEDELAY];
+         current_clip = &frame_clip_[(7*FRAMEDELAY-frame_)/FRAMEDELAY];
 
     SDL_Rect renderQuad = {rect_.x, rect_.y , width_frame_*zoom, height_frame_*zoom};
 
     SDL_RenderCopy (des, p_object_, current_clip, &renderQuad);
 
-    SDL_Rect renderQuad_bow = {rect_.x+width_frame_*zoom*0.33, rect_.y+height_frame_*zoom*0.63, width_frame_*zoom*0.55, height_frame_*zoom*0.4};
-    if(run_ != 1)
-        SDL_RenderCopy (des, weapon.get_p_object(), NULL, &renderQuad_bow);
-
-
+ //   SDL_Rect renderQuad_bow = {rect_.x+width_frame_*zoom*0.33, rect_.y+height_frame_*zoom*0.63, width_frame_*zoom*0.55, height_frame_*zoom*0.4};
+  //  if(run_ != 1)
+    //    SDL_RenderCopy (des, weapon.get_p_object(), NULL, &renderQuad_bow);
 }
 
 void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
 {
     if(events.type == SDL_KEYDOWN)
     {
-        if(events.key.keysym.sym == SDLK_RIGHT)
+        if(events.key.keysym.sym == SDLK_d)
         {
             status_ = WALK_RIGHT;
             input_type_.right_ = 1;
             input_type_.left_ = 0;
         }
-        if(events.key.keysym.sym == SDLK_LEFT)
+        if(events.key.keysym.sym == SDLK_a)
         {
             status_ = WALK_LEFT;
             input_type_.left_ = 1;
             input_type_.right_ = 0;
         }
-        if(events.key.keysym.sym == SDLK_DOWN)
+        if(events.key.keysym.sym == SDLK_s)
         {
             input_type_.down_ = 1;
         }
-        if(events.key.keysym.sym == SDLK_UP)
+        if(events.key.keysym.sym == SDLK_w)
         {
             input_type_.up_ = 1;
         }
@@ -164,21 +158,21 @@ void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
     }
     else if (events.type == SDL_KEYUP)
     {
-        if(events.key.keysym.sym == SDLK_RIGHT)
+        if(events.key.keysym.sym == SDLK_d)
         {
             status_ = WALK_RIGHT;
             input_type_.right_ = 0;
         }
-        if(events.key.keysym.sym == SDLK_LEFT)
+        if(events.key.keysym.sym == SDLK_a)
         {
             status_ = WALK_LEFT;
             input_type_.left_ = 0;
         }
-        if(events.key.keysym.sym == SDLK_DOWN)
+        if(events.key.keysym.sym == SDLK_s)
         {
             input_type_.down_ = 0;
         }
-        if(events.key.keysym.sym == SDLK_UP)
+        if(events.key.keysym.sym == SDLK_w)
         {
             input_type_.up_ = 0;
         }
@@ -210,7 +204,7 @@ void PlayerObject :: Move(SDL_Event events, SDL_Renderer * screen)
 
 }
 
-void PlayerObject::Shoot(SDL_Renderer* des,SDL_Event events,int time)
+void PlayerObject::Shoot(SDL_Renderer* des,SDL_Event events,int time,float x_shoot, float y_shoot)
 {
     if(time-time_ >= 40){
     if(events.type == SDL_MOUSEBUTTONDOWN)
@@ -223,14 +217,16 @@ void PlayerObject::Shoot(SDL_Renderer* des,SDL_Event events,int time)
             if(status_ == WALK_LEFT)
             {
                 p_arrow->set_arrow_dir(ArrowObject::DIR_LEFT);
-                p_arrow->SetRect(this->rect_.x , rect_.y + height_frame_*0.5 );
+                p_arrow->SetRect(this->rect_.x , rect_.y + height_frame_*0.5);
+                p_arrow->set_dir(x_shoot,y_shoot,x_pos_,y_pos_);
                 p_arrow->LoadImg("img//arrow1.png", des);
             }
             else if(status_ == WALK_RIGHT)
             {
                 p_arrow->set_arrow_dir(ArrowObject::DIR_RIGHT);
                 p_arrow->SetRect(this->rect_.x + width_frame_ - 10, rect_.y + height_frame_*0.5 );
-                p_arrow->LoadImg("img//arrow.png", des);
+                p_arrow->set_dir(x_shoot,y_shoot,x_pos_,y_pos_);
+                p_arrow->LoadImg("img//arrow1.png", des);
             }
 
             p_arrow->SetRect(this->rect_.x + width_frame_ - 10, rect_.y + height_frame_*0.5 );
@@ -241,6 +237,7 @@ void PlayerObject::Shoot(SDL_Renderer* des,SDL_Event events,int time)
         }
     }
     }
+
 
     for(int i=0; i < p_arrow_list_.size(); i++)
     {
@@ -263,8 +260,55 @@ void PlayerObject::Shoot(SDL_Renderer* des,SDL_Event events,int time)
             }
         }
     }
+//////////
+    if(time-time1_ >= 100){
+    if(events.type == SDL_MOUSEBUTTONDOWN)
+    {
+        time1_ = time;
+        if( events.button.button == SDL_BUTTON_RIGHT)
+        {
+            ThunderObject * p_thunder = new ThunderObject();
 
+                p_thunder->LoadImg("img//Thunder.png", des);
+                p_thunder->set_rect(x_shoot, y_shoot);
+                p_thunder->Set_clip();
 
+            p_thunder_list_.push_back(p_thunder);
+
+        }
+    }
+    }
+
+    if(p_thunder_list_.size() > 0){ cout << p_thunder_list_.size();
+  /*  for(int i=0; i < p_thunder_list_.size(); i++)
+    { */
+        ThunderObject* p_thunder = p_thunder_list_.at(0);
+        if(p_thunder != NULL)
+        {
+            if(p_thunder->frame_ <= 7*5-3)
+            {
+                if(p_thunder!=NULL){
+                p_thunder->Render(des);
+             //   cout << " ";
+                }
+            }
+            if(p_thunder->frame_ > 7*5-3)
+            {
+                p_thunder_list_.pop_back();
+                if(p_thunder != NULL)
+                {
+                    p_thunder->Free();
+                    delete p_thunder;
+                    p_thunder = NULL;
+                }
+
+               //  p_thunder_list_.pop_back();
+
+            }
+
+        }
+   // }
+    }
 
 }
 

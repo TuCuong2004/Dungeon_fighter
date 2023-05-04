@@ -30,12 +30,17 @@ public:
 
     void set_arrow_dir(const unsigned int & arrowdir){arrow_dir_ = arrowdir;}
     unsigned int get_arrow_dir() const{return arrow_dir_;}
+    void set_dir(float a, float b, float c, float d)    {x_shoot=a;y_shoot=b;x_player=c;y_player=d;}
 
 private:
     int x_val_;
     int y_val_;
     bool is_move_;
     unsigned int arrow_dir_;
+    float x_shoot;
+    float y_shoot;
+    float x_player;
+    float y_player;
 
 };
 

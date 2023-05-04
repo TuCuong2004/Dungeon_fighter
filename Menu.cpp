@@ -14,15 +14,15 @@ SDL_Rect button1,button2;
 string text= "START";
 string text2= "QUIT";
 string text3= "Dungeon fighter";
-void printText(SDL_Renderer* renderer,string text,int x, int y,TTF_Font* font,SDL_Color textColor)
+void printText(SDL_Renderer* renderer,string text,int x, int y,TTF_Font* font,SDL_Color textColor, float w, float h )
 {
     SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(),textColor);
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer,surface);
     SDL_Rect dest;
     dest.x = x;
     dest.y = y;
-    dest.w = 21*text.size();
-    dest.h = 45;
+    dest.w = w*text.size();
+    dest.h = h;
     SDL_RenderCopy(renderer, texture, NULL, &dest);
     SDL_DestroyTexture(texture);
  	SDL_FreeSurface(surface);
@@ -37,9 +37,9 @@ void draw_menu(SDL_Renderer* renderer,TTF_Font* font,SDL_Color textColor)
     SDL_RenderCopy(renderer,bg,NULL,NULL);
     SDL_RenderCopy(renderer,start,NULL,&button1);
     SDL_RenderCopy(renderer,quit,NULL,&button2);
-    printText(renderer,text3,SCREEN_WIDTH/2-21*text3.size()/2 ,150,font,textColor);
-    printText(renderer,text,SCREEN_WIDTH/2-21*text.size()/2 ,250,font,textColor);
-    printText(renderer,text2,SCREEN_WIDTH/2-21*text2.size()/2 ,350,font,textColor);
+    printText(renderer,text3,SCREEN_WIDTH/2-21*text3.size()/2 ,120,font,textColor, 21, 100);
+    printText(renderer,text,SCREEN_WIDTH/2-21*text.size()/2 ,250,font,textColor, 21, 45);
+    printText(renderer,text2,SCREEN_WIDTH/2-21*text2.size()/2 ,350,font,textColor, 21, 45);
 
 }
 void run_menu(SDL_Renderer* renderer,TTF_Font* font,SDL_Color textColor)

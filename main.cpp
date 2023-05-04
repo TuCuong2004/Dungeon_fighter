@@ -11,10 +11,6 @@ using namespace std;
 BaseObject g_background;
 TTF_Font* font=NULL;
 SDL_Color textColor = {255, 255, 255};
-void Init_menu()
-{
-
-}
 
 
 bool InitData()
@@ -168,7 +164,7 @@ vector<ThreatsObject*> MakeThreats1()
         delete p_threat;
     }
 
- /*  for(int i=0; i<5; i++)
+   for(int i=0; i<5; i++)
     {
         ThreatsObject* p_threat = new ThreatsObject;
         p_threat->LoadImageA("img//threats2_r.png",g_screen);
@@ -181,9 +177,9 @@ vector<ThreatsObject*> MakeThreats1()
         threats_list1.push_back(p_threat);
         p_threat = nullptr;
         delete p_threat;
-    } */
+    }
 
-   /* for(int i=0; i<5; i++)
+    for(int i=0; i<5; i++)
     {
         ThreatsObject* p_threat = new ThreatsObject;
         p_threat->LoadImageA("img//threats2_r.png",g_screen);
@@ -196,7 +192,7 @@ vector<ThreatsObject*> MakeThreats1()
         threats_list1.push_back(p_threat);
         p_threat = nullptr;
         delete p_threat;
-    }*/
+    }
     return threats_list1;
 }
 
@@ -233,11 +229,42 @@ vector<ThreatsObject*> MakeThreats2()
         delete p_threat;
     }
 
+    for(int i=0; i<5; i++)
+    {
+        ThreatsObject* p_threat = new ThreatsObject;
+        p_threat->LoadImageA("img//threats2_r.png",g_screen);
+        p_threat->set_type("3");
+        p_threat->set_hp_v();
+        p_threat->Set_clip();
+        p_threat->set_x_pos(270 +i*100);
+        p_threat->set_y_pos(60);
+
+        threats_list1.push_back(p_threat);
+        p_threat = nullptr;
+        delete p_threat;
+    }
+
+    for(int i=0; i<5; i++)
+    {
+        ThreatsObject* p_threat = new ThreatsObject;
+        p_threat->LoadImageA("img//threats2_r.png",g_screen);
+        p_threat->set_type("3");
+        p_threat->set_hp_v();
+        p_threat->Set_clip();
+        p_threat->set_x_pos(270 +i*100);
+        p_threat->set_y_pos(SCREEN_HEIGHT-100);
+
+        threats_list1.push_back(p_threat);
+        p_threat = nullptr;
+        delete p_threat;
+    }
     return threats_list1;
 }
 
 int main( int argc, char* args[] )
 {
+    int score=0;
+    int kill=0;
     int time[10];
     for(int i=0; i<10; i++)
     {
@@ -272,11 +299,10 @@ int main( int argc, char* args[] )
         intro_threats2.LoadImageA("img//threats4_l.png",g_screen);
         intro_threats2.Set_clip();
 
-
     while(1)
     {
 //        game_map0.DrawMap(g_screen);
-       intro_back_ground.Render(g_screen);
+        intro_back_ground.Render(g_screen);
         SDL_PollEvent(&g_event);
         draw_menu(g_screen,font,textColor);
         if(g_event.type == SDL_MOUSEBUTTONDOWN&&mouseX>=458&&mouseX<=563&&mouseY>=250&&mouseY<=295)
@@ -330,10 +356,8 @@ int main( int argc, char* args[] )
     vector<ThreatsObject*> threats_list1 = MakeThreats1();
     vector<ThreatsObject*> threats_list2 = MakeThreats2();
 
-    /////////////////start window ///////////////////
-
+    bool is_menu = 0;
     bool is_quit = 0;
-
     while(!is_quit)
     {
         if(SDL_PollEvent(&g_event) != 0)
@@ -342,6 +366,29 @@ int main( int argc, char* args[] )
                 is_quit = 1;
 
         }
+    /////////////////menu /////////////////////////////////////////
+        if(g_event.key.keysym.sym == SDLK_ESCAPE)   is_menu = 1;
+        while(is_menu!=0)
+        {
+
+            GameMap menu_map;
+            menu_map.LoadMap("map/map0.o");
+            menu_map.LoadTiles(g_screen);
+            menu_map.DrawMap(g_screen);
+
+
+            string s1 = "Kill " + to_string(kill);
+            printText(g_screen,s1,100 ,270,font,textColor, 15, 30);
+            string s2 = "Score " + to_string(score);
+            printText(g_screen,s2,400 ,270,font,textColor, 15, 30);
+            string s3 = "Round " + to_string(Check_round(threats_list1,threats_list2));
+            printText(g_screen,s3,700 ,270,font,textColor, 15, 30);
+
+            SDL_RenderPresent(g_screen);
+            if ( SDL_WaitEvent(&g_event) != 0 &&(g_event.type == SDL_KEYDOWN || g_event.type == SDL_QUIT) )  is_menu = 0;
+
+        }
+        /////////////////menu /////////////////////////////////////////
 
         SDL_SetRenderDrawColor(g_screen,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR,RENDER_DRAW_COLOR);
         SDL_RenderClear(g_screen);
@@ -350,13 +397,13 @@ int main( int argc, char* args[] )
         game_map.DrawMap(g_screen);
 
         p_player.Move(g_event,g_screen);
-        p_player.Shoot(g_screen,g_event,time[0]);
+        p_player.Shoot(g_screen,g_event,time[0],g_event.button.x,g_event.button.y);
         p_player.Render(g_screen);
 
 
-        if(Check_round(threats_list1,threats_list2) == 1)  ///// round1 /////
+        if( 1 )  ///// round1 /////
         {
-            if(time[1] - 0 <= 300) {printText(g_screen,"Round 1",SCREEN_WIDTH/2 -100 ,150,font,textColor);}
+            if(time[1] - 0 <= 300) {printText(g_screen,"Round 1",SCREEN_WIDTH/2 -100 ,150,font,textColor, 21, 45);}
             ThreatsControl(threats_list1,p_player,time[1]);
                   vector<ArrowObject*> arrow_list = p_player.get_arrow_list();
                 for(int i = 0; i < arrow_list.size(); i++)
@@ -384,6 +431,8 @@ int main( int argc, char* args[] )
                                 }
                                 if(threats_list1[k]->get_hp() == 0 )
                                 {
+                                score+=10;
+                                kill++;
                                 threats_list1[k]->Free();
                                 threats_list1.erase(threats_list1.begin() + k);
                                 }
@@ -419,14 +468,57 @@ int main( int argc, char* args[] )
                             }
 
                         }
+
+                        vector<ThunderObject*> thungder_list = p_player.get_thunder_list();
+                for(int i = 0; i < thungder_list.size(); i++)
+                {
+                    if(thungder_list[0] != NULL)
+                    {
+                        for(int k = 0; k < threats_list1.size(); k++)
+                        {
+                            if(threats_list1[k] != NULL)
+                            {
+                                SDL_Rect a_rect;
+                                a_rect.x = threats_list1[k]->GetRect().x;
+                                a_rect.y = threats_list1[k]->GetRect().y;
+                                a_rect.w = threats_list1[k]->get_width_frame();
+                                a_rect.h = threats_list1[k]->get_height_frame();
+
+                                SDL_Rect b_rect = thungder_list[0]->get_dame_rect();
+                              //  cout <<thungder_list[0]->get_dame_rect().x << endl;
+                                bool bCol = CheckCollision(a_rect,b_rect);
+                              //  cout << bCol << " "<<thungder_list[0]->frame_  << " ";
+
+                                 if(bCol && thungder_list[0]->frame_ >= 31 /* FRAMEDELAY->THUNDEROBJECT*/)
+                                {
+
+                                   // p_player.RemoveArrow(i);
+                                    threats_list1[k]->get_damage();
+                                }
+
+                                if(threats_list1[k]->get_hp() == 0 )
+                                {
+                                threats_list1[k]->Free();
+                                threats_list1.erase(threats_list1.begin() + k);
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+               }
                         time[1]++;
 
         }
 
 
-       if(Check_round(threats_list1,threats_list2) == 2)  ///// round2 /////
+       if(time[0] >=500)  ///// round2 /////
         {
-            if(time[2] <= 300) {printText(g_screen,"Round 2",SCREEN_WIDTH/2 -100 ,150,font,textColor);}
+          //  p_player.x_pos_ = SCREEN_WIDTH/2;
+          //  p_player.y_pos_ = SCREEN_HEIGHT/2;
+            if(time[2] <= 300) {printText(g_screen,"Round 2",SCREEN_WIDTH/2 -100 ,150,font,textColor, 21, 45);}
                 ThreatsControl(threats_list2,p_player,time[2]);
                 vector<ArrowObject*> arrow_list = p_player.get_arrow_list();
                 for(int i = 0; i < arrow_list.size(); i++)
@@ -491,6 +583,50 @@ int main( int argc, char* args[] )
                             }
 
                         }
+
+
+                vector<ThunderObject*> thungder_list = p_player.get_thunder_list();
+                for(int i = 0; i < thungder_list.size(); i++)
+                {
+                    if(thungder_list[0] != NULL)
+                    {
+                        for(int k = 0; k < threats_list2.size(); k++)
+                        {
+                            if(threats_list2[k] != NULL)
+                            {
+                                SDL_Rect a_rect;
+                                a_rect.x = threats_list2[k]->GetRect().x;
+                                a_rect.y = threats_list2[k]->GetRect().y;
+                                a_rect.w = threats_list2[k]->get_width_frame();
+                                a_rect.h = threats_list2[k]->get_height_frame();
+
+                                SDL_Rect b_rect = thungder_list[0]->get_dame_rect();
+                              //  cout <<thungder_list[0]->get_dame_rect().x << endl;
+                                bool bCol = CheckCollision(a_rect,b_rect);
+                              //  cout << bCol << " "<<thungder_list[0]->frame_  << " ";
+
+                                 if(bCol && thungder_list[0]->frame_ >= 31 /* FRAMEDELAY->THUNDEROBJECT*/)
+                                {
+
+                                   // p_player.RemoveArrow(i);
+                                    threats_list2[k]->get_damage();
+                                }
+
+                                if(threats_list2[k]->get_hp() == 0 )
+                                {
+                                threats_list2[k]->Free();
+                                threats_list2.erase(threats_list2.begin() + k);
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+               }
+
+
                         time[2]++;
         }
 

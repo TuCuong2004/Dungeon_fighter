@@ -116,7 +116,7 @@ int ThreatsObject::Move(float x, float y, int time)
  {
     int dem = 1;
     int status=0;
-    if(time%2==0)
+   /* if(time%2==0)
     {
         if (x_pos_ > x && dem == 1){
             x_pos_-=THREATS_V;
@@ -154,7 +154,15 @@ int ThreatsObject::Move(float x, float y, int time)
             x_pos_+=THREATS_V;
         }
         }
-    }
+    } */
+
+    if(x_pos_ > x)      status =1;
+    if(x_pos_ < x)      status =0;
+    float d = sqrt((x_pos_ - x)*(x_pos_ - x) + (y_pos_ - y)*(y_pos_ - y));
+
+    x_pos_+=THREATS_V*(x - x_pos_)*1.00/d;
+    y_pos_+=THREATS_V*(y - y_pos_)*1.00/d;
+
 
     return status;
  }

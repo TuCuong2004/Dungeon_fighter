@@ -12,7 +12,7 @@
 #include <fstream>
 #include <string>
 #include <typeinfo>
-
+#include <cmath>
 #define THREATS_ROUND_1 5
 #define FRAMEDELAY 7
 

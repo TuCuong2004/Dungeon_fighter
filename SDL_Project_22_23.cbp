@@ -44,6 +44,8 @@
 		<Unit filename="PlayerObject.h" />
 		<Unit filename="ThreatsObject.cpp" />
 		<Unit filename="ThreatsObject.h" />
+		<Unit filename="Thunder.cpp" />
+		<Unit filename="Thunder.h" />
 		<Unit filename="arrow.cpp" />
 		<Unit filename="arrow.h" />
 		<Unit filename="game_map.cpp" />
