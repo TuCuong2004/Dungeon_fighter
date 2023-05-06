@@ -70,7 +70,7 @@
 	"CommonFunction.h"
 	"BaseObject.h"
 
-1683195812 source:c:\users\hp\desktop\dungeon_ fighter\playerobject.cpp
+1683195878 source:c:\users\hp\desktop\dungeon_ fighter\playerobject.cpp
 	"PlayerObject.h"
 	"arrow.h"
 
@@ -81,7 +81,7 @@
 	"BaseObject.h"
 	"Thunder.h"
 
-1683195472 source:c:\users\hp\desktop\dungeon_ fighter\main.cpp
+1683392357 source:c:\users\hp\desktop\dungeon_ fighter\main.cpp
 	"CommonFunction.h"
 	"BaseObject.h"
 	"game_map.h"
